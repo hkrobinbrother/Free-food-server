@@ -34,10 +34,19 @@ async function run() {
     const requestCollection = client.db("foodDB").collection("requests");
     // get data
     app.get("/food", async (req, res) => {
-      const cursor = foodCollection.find();
-      const result = await cursor.toArray();
-      res.send(result)
-    })
+      const sort = req.query.sort;
+      let sortOrder = 1;
+
+      if (sort === "dec") sortOrder = -1;
+
+      const result = await foodCollection
+        .find()
+        .sort({ date: sortOrder })
+        .toArray();
+
+      res.send(result);
+    });
+
 
     // get one
 
@@ -65,7 +74,6 @@ async function run() {
     // post data
     app.post("/food", async (req, res) => {
       const newFood = req.body;
-      console.log(newFood)
       const result = await foodCollection.insertOne(newFood)
       res.send(result)
     })

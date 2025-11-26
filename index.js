@@ -6,8 +6,12 @@ const port = process.env.PORT || 3000;
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 // middleware
-app.use(cors());
+app.use(cors({
+  origin: "https://free-food-client-vm9f.vercel.app",
+  credentials: true
+}));
 app.use(express.json());
+
 
 
 
@@ -22,7 +26,6 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   }
 });
-
 
 
 async function run() {
